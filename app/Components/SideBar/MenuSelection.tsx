@@ -2,7 +2,6 @@ import React from "react";
 import { useGlobalContextProvider } from "@/app/contextApi";
 import { menuItemType } from "@/app/Types/MenuItemType";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { set } from "mongoose";
 
 function MenuSelection() {
     const { menuItemsObject } = useGlobalContextProvider();

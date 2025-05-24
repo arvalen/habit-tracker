@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { SignOutButton, useUser } from "@clerk/nextjs";
 import Sidebar from "../Components/SideBar/Sidebar";
 import { useGlobalContextProvider } from "../contextApi";
 import { menuItemType } from "../Types/MenuItemType";

@@ -4,15 +4,11 @@ import { ReactNode, createContext, useState, useContext } from "react";
 
 import { GlobalContextType } from "./Types/GlobalContextType";
 import { menuItemType } from "./Types/MenuItemType";
-import { faSlack } from "@fortawesome/free-brands-svg-icons";
 import { 
     faChartSimple,
     faLayerGroup,
-    faList,
     faRectangleList
  } from "@fortawesome/free-solid-svg-icons";
- import { Icon } from "@fortawesome/fontawesome-svg-core";
-
 
 const GlobalContext= createContext<GlobalContextType>({
     menuItemsObject: {
