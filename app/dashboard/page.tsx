@@ -5,7 +5,7 @@ import Sidebar from "../Components/SideBar/Sidebar";
 import { useGlobalContextProvider } from "../contextApi";
 import { menuItemType } from "../Types/MenuItemType";
 import Areas from "../Pages/Areas/Areas";
-import AllHabits from "../Pages/AllHabits/Allhabits";
+import AllHabits from "../Pages/AllHabits/AllHabits";
 import Statistics from "../Pages/Statistics/Statistics";
 
 function Dashboard() {
@@ -40,7 +40,7 @@ function Dashboard() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex bg-slate-50">
       <Sidebar />
       {selectComponent}
     </div>

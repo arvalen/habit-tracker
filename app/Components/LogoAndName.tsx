@@ -9,14 +9,14 @@ function LogoAndName() {
             <span className="text-2xl font-light flex items-center gap-2">
                 {/* The Icon */}
                 <div
-                style={{ backgroundColor: defaultColor }}
+                style={{ backgroundColor: defaultColor.default }}
                 className=" p-2 rounded-md "
                 >
                     <AppIcon color="#ffffff" height="34" width="34" />
                 </div>
                 {/* The Name of the app*/}
                 <span
-                style={{ color: defaultColor }}
+                style={{ color: defaultColor.default }}
                 className="font-bold text-mainColor"
                 >
                 Habit

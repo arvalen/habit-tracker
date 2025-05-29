@@ -5,7 +5,7 @@ import LogoutSection from "./LogoutSection";
 
 function Sidebar() {
     return (
-        <div className="border-r-2 h-screen p-10 flex flex-col gap-20">
+        <div className=" flex-grow p-10 flex flex-col border  bg-white min-h-screen">
             <LogoAndName />
             <MenuSelection />
             <LogoutSection />
