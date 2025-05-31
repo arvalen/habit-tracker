@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AllHabitsSearchBar from "./AllHabitsSearchBar";
 import DarkMode from "./DarkMode";
 import { UserButton } from "@clerk/nextjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { useGlobalContextProvider } from "@/app/contextApi";
 
 function AllHabitsTopBar () {
+    const { openSideBarObject } = useGlobalContextProvider();
+    const { openSideBar, setOpenSideBar } = openSideBarObject;
     const userButtonAppearance = {
         elements: {
             userButtonAvatarBox: "w-10 h-10",
@@ -13,7 +16,24 @@ function AllHabitsTopBar () {
         },
     };
 
-    return(
+    function openSideBarFunction() {
+        setOpenSideBar(!openSideBar);
+    }
+
+    useEffect(() => {
+        function handleResize() {
+            setOpenSideBar(false);
+        }
+
+        window.addEventListener("resize", handleResize);
+
+
+        return() => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, []);
+
+    return (
         <div className="bg-white p-5 rounded-md flex justify-between">
             <div className="flex gap-4">
                 <div className="max-lg:flex hidden">
@@ -35,6 +55,7 @@ function AllHabitsTopBar () {
                 <AllHabitsSearchBar/>
                 <DarkMode/>
                 <FontAwesomeIcon
+                    onClick={openSideBarFunction}
                     className="m-2 max-xl:flex hidden mt-[13px] cursor-pointer "
                     icon={faBars}
                 />

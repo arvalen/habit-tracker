@@ -22,8 +22,7 @@ function Dashboard() {
         setSelectedMenu(singleItem);
       }
     });
-  }, [menuItems])
-
+  }, [menuItems]);
 
   if (selectedMenu) {
     switch (selectedMenu.name) {
@@ -39,16 +38,29 @@ function Dashboard() {
       case "All Areas":
         break;
     }
-  }
 
-  return (
-    <div className="flex bg-slate-50">
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Sidebar />
-      {selectComponent}
-      </LocalizationProvider>
-    </div>
-  );
+    return (
+      <div className="flex bg-slate-50">
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Sidebar />
+          {selectComponent}
+          <BlackSoftLayer />
+        </LocalizationProvider>
+      </div>
+    );
+  }
 }
 
 export default Dashboard;
+
+function BlackSoftLayer() {
+  const { openSideBarObject } = useGlobalContextProvider();
+  const { openSideBar } = openSideBarObject;
+  return (
+    <div
+      className={`w-full h-full bg-black fixed top-0 left-0 opacity-20 z-40 ${
+        openSideBar ? "fixed" : "hidden"
+      }`}
+    ></div>
+  );
+}

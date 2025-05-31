@@ -6,4 +6,8 @@ export type GlobalContextType = {
         menuItems: menuItemType[];
         setMenuItems: Dispatch<SetStateAction<menuItemType[]>>;
     };
+    openSideBarObject: {
+        openSideBar: boolean;
+        setOpenSideBar: Dispatch<SetStateAction<boolean>>;
+    }
 };
