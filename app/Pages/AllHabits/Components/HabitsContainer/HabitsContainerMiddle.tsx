@@ -1,101 +1,107 @@
 import { faCode } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Checkbox, IconButton } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useGlobalContextProvider } from "@/app/contextApi";
 import { darkModeColor, defaultColor } from "@/colors";
+import { AreaType, HabitType } from "@/app/Types/GlobalTypes";
+import { getCurrentDayName } from "@/app/utils/allHabitsUtils/DateFunctions";
+import { ListIcon } from "@/app/Assets/ListIcon";
+import EmptyHabitsPlaceHolder from "@/app/EmptyPlaceHolders/HabitsEmptyPlaceHolder";
+import { v4 as uuidv4 } from "uuid";
+import { HabitCard } from "../SingleHabitCard";
+import WellDonePlaceHolder from "@/app/EmptyPlaceHolders/HabitsEmptyPlaceHolder";
+import { SuccessIcon } from "@/app/Assets/SuucessIcon";
+import LoadingScreen from "@/app/LodingScreen";
 
 export default function HabitsContainerMiddle() {
-  return (
-    <div className="p-3">
-      <HabitCard />
-      <HabitCard />
-      <HabitCard />
-    </div>  
-  );
+  const {
+    allHabitsObject,
+    selectedCurrentDayObject,
+    selectedAreaStringObject,
+    allFilteredHabitsObject,
+    searchInputObject: { searchInput, setSearchInput },
+    loadingObject: { isLoading },
+  } = useGlobalContextProvider();
+  const { allHabits } = allHabitsObject;
+  const { allFilteredHabits, setAllFilteredHabits } = allFilteredHabitsObject;
+  const { selectedCurrentDate } = selectedCurrentDayObject;
+  const { selectedAreaString } = selectedAreaStringObject;
 
-  function HabitCard() {
-    const { darkModeObject } = useGlobalContextProvider();
-    const { isDarkMode } = darkModeObject;
-    
-    return (
-      // Element for the whole Habit Cards
-      <div className="flex p-3 items-center justify-between">
-        {/* The rounded checkbox */}
-        <Checkbox
-          icon={<RadioButtonUncheckedIcon />}
-          checkedIcon={<CheckCircleIcon />}
-          sx={{
-            color: defaultColor.default,
-            "&.Mui-checked": {
-              color: defaultColor.default,
-            },
-          }}
-        />
-
-        <div
-          style={{
-            backgroundColor: isDarkMode
-              ? darkModeColor.backgroundSlate
-              : defaultColor.backgroundSlate,
-          }} 
-          className="flex justify-between gap-2 w-full p-3 py-4 rounded-md"
-        >
-          <div className="w-full">
-            {/* Divs for the icon and the name of the habit */}
-            <div className="flex gap-2 justify-between">
-              <div className="flex gap-2 items-center">
-                <FontAwesomeIcon
-                  className="p-3 rounded-full w-4 h-4 bg-customRed text-white"
-                  height={20}
-                  width={20}
-                  icon={faCode}
-                />
-                <span className="">Coding</span>
-              </div>
-            </div>
-            {/* Divs for the areas */}
-            <div className="flex gap-2 mt-2">
-              <div
-                style={{
-                  color: isDarkMode
-                    ? darkModeColor.textColor
-                    : defaultColor.textColor,
-                  backgroundColor: isDarkMode
-                    ? defaultColor[50]
-                    : defaultColor[100],
-                }}
-                className="p-1 text-[12px] rounded-md px-2"
-              >
-                <span className=" ">Area1</span>
-              </div>
-
-              <div
-                style={{ 
-                  color: isDarkMode
-                    ? darkModeColor.textColor
-                    : defaultColor.textColor,
-                  backgroundColor: isDarkMode
-                    ? defaultColor[50]
-                    : defaultColor[100],
-                }}
-                className="p-1 text-[12px] rounded-md px-2"
-              >
-                <span className=" ">Area2</span>
-              </div>
-            </div>
-          </div>
-          {/* Divs for the three dots button */}
-          <div className="w-10 flex items-center justify-center">
-            <IconButton>
-              <MoreVertIcon sx={{color: isDarkMode ? "white" : "gray"}} />
-            </IconButton>
-          </div>
-        </div>
-      </div>
+  useEffect(() => {
+    const getTwoFirstDayLetter = getCurrentDayName(selectedCurrentDate).slice(
+      0,
+      2
     );
+
+    let filteredHabitsByArea: HabitType[] = [];
+    const filteredHabitsByFrequency = allHabits.filter((singleHabit) => {
+      return singleHabit.frequency[0].days.some(
+        (day) => day === getTwoFirstDayLetter
+      );
+    });
+
+    if (selectedAreaString !== "All") {
+      filteredHabitsByArea = filteredHabitsByFrequency.filter((habit) =>
+        habit.areas.some((area) => area.name === selectedAreaString)
+      );
+    } else {
+      filteredHabitsByArea = filteredHabitsByFrequency;
+    }
+
+    const filterBySearch = filteredHabitsByArea.filter((habit) => {
+      return habit.name.toLowerCase().includes(searchInput.toLowerCase());
+    });
+
+    console.log(filterBySearch);
+
+    setAllFilteredHabits(filterBySearch);
+  }, [selectedCurrentDate, allHabits, selectedAreaString, searchInput]);
+
+  const isAllHabitsCompleted =
+    allFilteredHabits.length > 0 &&
+    allFilteredHabits.every((habit) => {
+      return habit.completedDays.some(
+        (day) => day.date === selectedCurrentDate
+      );
+    });
+
+  if (isLoading && allFilteredHabits.length === 0) {
+    return <LoadingScreen />;
   }
+
+  return (
+    <div className=" p-3">
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <div>
+          {allFilteredHabits.length === 0 ? (
+            <EmptyHabitsPlaceHolder />
+          ) : (
+            <>
+              {isAllHabitsCompleted && (
+                <div className="flex justify-center items-center p-5 flex-col">
+                  <SuccessIcon color={defaultColor.textColor50} />
+                  <span className="text-[13px] text-gray-400 w-64 text-center mt-6">
+                    {`Great job! You've completed all your habits for today. 🌟`}
+                  </span>
+                </div>
+              )}
+              {allFilteredHabits.map((singleHabit, singleHabitIndex) => (
+                <div key={singleHabitIndex}>
+                  {singleHabit.completedDays.some(
+                    (day) => day.date === selectedCurrentDate
+                  ) === false && <HabitCard singleHabit={singleHabit} />}
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
