@@ -1,10 +1,20 @@
 import React from "react";
 import HabitsContainerTop from "./HabitsContainer/HabitsContainerTop";
 import HabitsContainerMiddle from "./HabitsContainer/HabitsContainerMiddle";
-
+import { useGlobalContextProvider } from "@/app/contextApi";
+import { darkModeColor, defaultColor } from "@/colors";
 function HabitsContainer () {
+    const { darkModeObject } = useGlobalContextProvider();
+    const { isDarkMode } = darkModeObject;
     return (
-        <div className="mt-5 bg-white rounded-md p-5 flex flex-col gap-3">
+        <div
+            style={{
+                color: isDarkMode ? darkModeColor.textColor : defaultColor.textColor,
+                backgroundColor: isDarkMode 
+                    ? darkModeColor.background
+                    : defaultColor.background
+            }} 
+            className="mt-5 bg-white rounded-md p-5 flex flex-col gap-3">
             <HabitsContainerTop />
             <HabitsContainerMiddle /> 
         </div>
