@@ -9,8 +9,11 @@ import CalendarHeatmap from "react-calendar-heatmap";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { HabitType } from "@/app/Types/GlobalTypes";
 import "react-calendar-heatmap/dist/styles.css";
-import "@/app/styles/calendarHeatmap.css";
+import "@/app/styles/calendarHeatmap.css"; // Ensure you import the base styles
 import { calculateStreak } from "./StatisticsBoard";
+
+//
+//
 
 export default function StatisticsHabitCard({ habit }: { habit: HabitType }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -36,12 +39,16 @@ export default function StatisticsHabitCard({ habit }: { habit: HabitType }) {
       }}
       className=" p-5 rounded-md m-3 mb-6 "
     >
+      {/* Icon + Habit name +  notification + frequency */}
       <div className="flex justify-between items-center">
         <div className="flex gap-3 items-center">
+          {/* Icon */}
           <div className="bg-customRed w-10 h-10 rounded-full p-3 flex items-center justify-center text-white">
             <FontAwesomeIcon icon={faBook} />
           </div>
+          {/* Habit Name */}
           <span>{habit.name}</span>
+          {/* Notification */}
           {habit.isNotificationOn && (
             <span
               style={{
@@ -54,10 +61,13 @@ export default function StatisticsHabitCard({ habit }: { habit: HabitType }) {
             </span>
           )}
         </div>
+        {/*  */}
+        {/* Freqeuncy */}
         <div>
           <span className="text-gray-400">{recurringDaysText}</span>
         </div>
       </div>
+      {/* Single card stats */}
       <div className="  mt-5 p-2 grid grid-cols-3">
         <div className="flex flex-col gap-1 justify-center   items-center">
           <span className="font-bold">{habit.completedDays.length}</span>
@@ -75,6 +85,7 @@ export default function StatisticsHabitCard({ habit }: { habit: HabitType }) {
           <span>Streaks</span>
         </div>
       </div>
+      {/* Headmap */}
 
       <div
         style={{
@@ -90,6 +101,7 @@ export default function StatisticsHabitCard({ habit }: { habit: HabitType }) {
           <HabitHeatmap habit={habit} />
         </div>
       </div>
+      {/* Arrow to expand the card */}
       <div className=" flex justify-end mt-3">
         <FontAwesomeIcon
           onClick={() => setIsExpanded(!isExpanded)}

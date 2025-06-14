@@ -4,6 +4,7 @@ import { Checkbox, IconButton } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useGlobalContextProvider } from "@/app/contextApi";
 import { darkModeColor, defaultColor } from "@/colors";
@@ -14,7 +15,7 @@ import EmptyHabitsPlaceHolder from "@/app/EmptyPlaceHolders/HabitsEmptyPlaceHold
 import { v4 as uuidv4 } from "uuid";
 import { HabitCard } from "../SingleHabitCard";
 import WellDonePlaceHolder from "@/app/EmptyPlaceHolders/HabitsEmptyPlaceHolder";
-import { SuccessIcon } from "@/app/Assets/SuucessIcon";
+import { SuccessIcon } from "@/app/Assets/SuccessIcon";
 import LoadingScreen from "@/app/LodingScreen";
 
 export default function HabitsContainerMiddle() {
@@ -32,12 +33,14 @@ export default function HabitsContainerMiddle() {
   const { selectedAreaString } = selectedAreaStringObject;
 
   useEffect(() => {
+    // Get the first two characters of the selectedCurrentDate
     const getTwoFirstDayLetter = getCurrentDayName(selectedCurrentDate).slice(
       0,
       2
     );
 
     let filteredHabitsByArea: HabitType[] = [];
+    // Filter habits based on frequency
     const filteredHabitsByFrequency = allHabits.filter((singleHabit) => {
       return singleHabit.frequency[0].days.some(
         (day) => day === getTwoFirstDayLetter
@@ -58,9 +61,11 @@ export default function HabitsContainerMiddle() {
 
     console.log(filterBySearch);
 
+    // Set the filtered habits state
     setAllFilteredHabits(filterBySearch);
   }, [selectedCurrentDate, allHabits, selectedAreaString, searchInput]);
 
+  // Check if all habits for the selected date are completed
   const isAllHabitsCompleted =
     allFilteredHabits.length > 0 &&
     allFilteredHabits.every((habit) => {

@@ -1,5 +1,6 @@
 import React from "react";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+
 import { defaultColor, darkModeColor } from "@/colors";
 import { useGlobalContextProvider } from "@/app/contextApi";
 import { getDateString } from "@/app/utils/allHabitsUtils/DateFunctions";
@@ -13,16 +14,20 @@ function Calendar() {
     selectedCurrentDayObject;
   const { setOffsetDay } = offsetDayObject;
 
+  // Convert selectedCurrentDate to Dayjs object
   const value: Dayjs | null = selectedCurrentDate
     ? dayjs(selectedCurrentDate)
     : null;
 
   function handleOnChangeDate(newDate: Dayjs) {
+    //Convert from the Day.js object to Javascript Date Object
     const jsDate = newDate.toDate();
     const currentDate = new Date();
 
+    // Calculate the difference in milliseconds
     const differenceInMs = jsDate.getTime() - currentDate.getTime();
 
+    // Calculate the difference in days
     const differenceInDays = differenceInMs / (1000 * 3600 * 24);
 
     setOffsetDay(Math.floor(differenceInDays + 1));
@@ -45,10 +50,10 @@ function Calendar() {
           "& .MuiPickersDay-root": {
             color: isDarkMode
               ? darkModeColor.textColor
-              : defaultColor.textColor,
+              : defaultColor.textColor, // Default text color for the days
             "&.Mui-selected": {
               backgroundColor: defaultColor.default,
-              color: "white",
+              color: "white", // Text color for the selected day
             },
           },
           "& .MuiPickersYear-yearButton": {
@@ -57,7 +62,7 @@ function Calendar() {
               : defaultColor.textColor,
             "&.Mui-selected": {
               backgroundColor: defaultColor.default,
-              color: "white",
+              color: "white", // Text color for the selected year
             },
           },
         }}

@@ -5,8 +5,8 @@ import { useUser } from "@clerk/nextjs";
 function UserProfile() {
   const userButtonAppearance = {
     elements: {
-      userButtonAvatarBox: "w-14 h-14",
-      userButtonPopoverActionButton: "text-red-600",
+      userButtonAvatarBox: "w-14 h-14", // Custom width and height
+      userButtonPopoverActionButton: "text-red-600", // Custom text color for action buttons
     },
   };
 

@@ -2,7 +2,6 @@ import React from "react";
 import AppIcon from "../SVG_Icons/AppIcon";
 import { defaultColor } from "@/colors";
 
-
 function LogoAndName() {
     return (
         <div className="flex gap-2 items-center sm:justify-start justify-center">

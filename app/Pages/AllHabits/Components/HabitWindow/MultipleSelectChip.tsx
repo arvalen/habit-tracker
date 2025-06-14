@@ -9,12 +9,11 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSortAmountDesc, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { darkModeColor, defaultColor } from "@/colors";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useGlobalContextProvider } from "@/app/contextApi";
 import { AreaType, HabitType } from "@/app/Types/GlobalTypes";
-import { iconToText, textToIcon } from "../IconsWindow/IconData";
+import { textToIcon } from "../IconsWindow/IconData";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -35,7 +34,7 @@ function getStyles(
 export default function MultipleSelectChip({
   onChange,
 }: {
-  onChange: (selectedAreasItems: any) => void;
+  onChange: (selectedAreasItems: AreaType[] | null) => void;
 }) {
   const theme = useTheme();
 
@@ -52,7 +51,7 @@ export default function MultipleSelectChip({
 
   const [selectedAreas, setSelectedAreas] = React.useState<string[]>([]);
 
-  const [selectedAreasItems, setSelectedAreasItems] = useState<any>([]);
+  const [selectedAreasItems, setSelectedAreasItems] = useState<AreaType[] | null>([]);
   const MenuProps = {
     PaperProps: {
       style: {
@@ -79,14 +78,14 @@ export default function MultipleSelectChip({
   React.useEffect(() => {
     const selectedAreaObjects = selectedAreas.map((selectedArea) => {
       return allAreas.find((area) => area.name === selectedArea);
-    });
+    }).filter((area): area is AreaType => area !== undefined); // Filter out undefined and assert type
 
-    setSelectedAreasItems(selectedAreaObjects);
-  }, [selectedAreas]);
+    setSelectedAreasItems(selectedAreaObjects.length > 0 ? selectedAreaObjects : null);
+  }, [selectedAreas, allAreas]);
 
   React.useEffect(() => {
     onChange(selectedAreasItems);
-  }, [selectedAreasItems]);
+  }, [selectedAreasItems, onChange]);
 
   React.useEffect(() => {
     if (selectedItems) {
@@ -101,7 +100,7 @@ export default function MultipleSelectChip({
     } else {
       setSelectedAreas([]);
     }
-  }, [openHabitWindow]);
+  }, [openHabitWindow, selectedItems]);
 
   return (
     <div>

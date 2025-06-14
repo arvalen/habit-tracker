@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import GlobalContextProvider from "./contextApi";
+
+const inter = Inter({ subsets: ["latin"] });
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -12,7 +14,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Habit Tracker",
-  description: "Habit Tracker Website",
+  description: "Track your habits, goals..",
 };
 
 export default function RootLayout({
@@ -24,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <ClerkProvider>
         <GlobalContextProvider>
-        <body className={poppins.className}>{children}</body>
+          <body className={poppins.className}>{children}</body>
         </GlobalContextProvider>
       </ClerkProvider>
     </html>

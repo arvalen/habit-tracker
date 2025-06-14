@@ -4,6 +4,7 @@ import { Checkbox, IconButton } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useGlobalContextProvider } from "@/app/contextApi";
 import { darkModeColor, defaultColor } from "@/colors";
@@ -59,6 +60,7 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
     const habitToUpdateInTheServer = convertIconsToTextOfHabits(updatedHabits);
     editTheHabitInServer(habitToUpdateInTheServer);
 
+    //Update the habits state
     const updateAllHabits: HabitType[] = allHabits.map((habit) => {
       if (habit._id === updatedHabits._id) {
         return updatedHabits;
@@ -80,6 +82,7 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
     const habitToUpdateInTheServer = convertIconsToTextOfHabits(updatedHabits);
     editTheHabitInServer(habitToUpdateInTheServer);
 
+    //Update the habits state
     const updateAllHabits: HabitType[] = allHabits.map((habit) => {
       if (habit._id === updatedHabits._id) {
         return updatedHabits;
@@ -97,8 +100,11 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
     const left = rect.left;
     setDropDownPositions({ top, left });
     console.log(singleHabit);
+    //Open the dropdown
     event.stopPropagation();
+    //Open the dropdown
     setOpenDropDown(true);
+    //Select the single Habit
     setSelectedItems(singleHabit);
   }
 
@@ -110,7 +116,9 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
   }, [singleHabit, selectedCurrentDate, allHabits]);
 
   return (
+    //Element for the whole Habit cards
     <div className="  flex p-3 items-center justify-between  ">
+      {/* The rounded checkbox */}
       <Checkbox
         icon={<RadioButtonUncheckedIcon />}
         checkedIcon={<CheckCircleIcon />}
@@ -133,6 +141,7 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
         className="flex justify-between  gap-2 w-full p-3 py-4 rounded-md    "
       >
         <div className="  w-full">
+          {/* Divs for the icon and the name of the habit */}
           <div className="flex gap-2 justify-between   ">
             <div className="flex gap-2 items-center">
               <FontAwesomeIcon
@@ -144,6 +153,7 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
               <span className="">{singleHabit.name}</span>
             </div>
           </div>
+          {/* Divs for the areas */}
           <div className="flex gap-2 mt-3  ">
             {singleHabit.areas.map((singleArea, index) => (
               <div
@@ -163,6 +173,7 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
             ))}
           </div>
         </div>
+        {/* div for the three dots button */}
         <div className="w-10 flex items-center justify-center  ">
           <IconButton onClick={handleClickThreeDots}>
             <MoreVertIcon sx={{ color: isDarkMode ? "white" : "gray" }} />

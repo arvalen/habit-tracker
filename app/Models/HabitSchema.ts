@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+// Define the sub-schemas for the nested types
 const FrequencySchema = new Schema({
   type: { type: String, required: true },
   days: { type: [String], required: true },
@@ -18,6 +19,7 @@ const CompletedDaySchema = new Schema({
   date: { type: String, required: true },
 });
 
+// Define the main HabitType schema
 const HabitSchema = new Schema({
   name: { type: String, required: true },
   icon: { type: String, required: true },

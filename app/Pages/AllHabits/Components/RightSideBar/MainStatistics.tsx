@@ -27,6 +27,8 @@ function MainStatistics() {
   function calculateThePercentageOfTodaysProgress(
     allHabits: HabitType[]
   ): number {
+    //1. GET THE COMPLETED DAYS OF THE CURRENT DATE
+    //2.GET ALL THE HABITS THAT NEED TO BE DONE FOR THIS CURRENT DAY
     if (allHabits.length === 0 || !selectedCurrentDate) {
       return 0;
     }
@@ -35,6 +37,7 @@ function MainStatistics() {
     let totalAllHabitsOfCurrentDay = 0;
 
     if (allHabits) {
+      //GET THE COMPLETED DAYS OF THE CURRENT DATE
       const completedHabitsOfCurrentDate: HabitType[] = allHabits.filter(
         (habit) =>
           habit.completedDays.some((day) => day.date === selectedCurrentDate)
@@ -42,6 +45,7 @@ function MainStatistics() {
 
       totalHabitsOfCompletedDays = completedHabitsOfCurrentDate.length;
 
+      //GET ALL THE HABITS THAT NEED TO BE DONE FOR THIS CURRENT DAY
       const getTwoLetterOfCurrentDay = getCurrentDayName(
         selectedCurrentDate
       ).slice(0, 2);
@@ -70,10 +74,14 @@ function MainStatistics() {
   }, [selectedCurrentDate, allHabits]);
 
   useEffect(() => {
+    //Calculate the total streak
+    //:::::::::::::::::::::::::::::::::::::::::::::
     const streaks = allHabits.map((habit) => calculateStreak(habit));
     const totalStreak = streaks.reduce((a, b) => a + b, 0);
 
+    //Calculate the total perfect days
     const perfectDays = calculateTotalPerfectDays(allHabits);
+    //Updating the statistics
     const copyStatsInfo = [...statisticsInfo];
     copyStatsInfo[0].num = totalStreak;
     copyStatsInfo[1].num = perfectDays;
@@ -93,6 +101,7 @@ function MainStatistics() {
       <span className="font-bold text-xl cursor-pointer hover:text-customRed">
         Statistics
       </span>
+      {/* the circular progress bar */}
       <div className="relative pt-3">
         <CircularProgressBar progress={progress} />
         <div className="flex flex-col justify-center items-center absolute top-[59%] left-1/2 transform -translate-x-1/2 -translate-y-1/2  ">
@@ -102,6 +111,7 @@ function MainStatistics() {
           <span className="text-[11px] text-slate-400 text-center mt-1">{`Current Day's Progress`}</span>
         </div>
       </div>
+      {/* best streaks and perfect days */}
       <div className=" my-4  flex justify-center gap-6 flex-wrap items-center    w-full">
         {statisticsInfo.map((singleItem, singleItemIndex) => (
           <div className=" flex items-center gap-3" key={singleItemIndex}>
@@ -129,7 +139,7 @@ function MainStatistics() {
 }
 
 interface CircularProgressBarProps {
-  progress: number;
+  progress: number; // Progress in percentage (0-100)
 }
 
 const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
@@ -146,6 +156,7 @@ const CircularProgressBar: React.FC<CircularProgressBarProps> = ({
     <PieChart
       width={200}
       height={160}
+      // className="bg-red-300"
       margin={{ top: -20, right: 0, bottom: 40, left: 0 }}
     >
       <Pie

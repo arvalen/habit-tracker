@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { memo, useEffect, useRef, useState } from "react";
+
 import IconsWindow from "./IconsWindow/IconsWindow";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import TimerPicker from "@/app/Pages/AllHabits/Components/TimerPicker";
@@ -19,6 +20,7 @@ import { HabitType } from "@/app/Types/GlobalTypes";
 import { addNewHabit } from "@/app/utils/allHabitsUtils/addNewHabit";
 import toast from "react-hot-toast";
 import AllHabits from "../AllHabits";
+
 import { editHabit } from "@/app/utils/allHabitsUtils/editHabits";
 import { useUser } from "@clerk/nextjs";
 
@@ -40,6 +42,7 @@ function HabitWindow() {
   const { isDarkMode } = darkModeObject;
   const { setSelectedItems, selectedItems } = selectedItemsObject;
   const { user } = useUser();
+  //
   const [habitItem, setHabitItem] = useState<HabitType>({
     _id: "",
     name: "",
@@ -55,6 +58,7 @@ function HabitWindow() {
   const [iconSelected, setIconSelected] = useState<IconProp>(habitItem.icon);
 
   useEffect(() => {
+    // When the window is closed empty reset the habit Item
     if (!openHabitWindow) {
       setHabitItem({
         _id: "",
@@ -68,6 +72,8 @@ function HabitWindow() {
         completedDays: [],
       });
     } else {
+      //if the window is opened, we check if there is a selected item
+      //if so, we update the habit item
       if (selectedItems) {
         setHabitItem(selectedItems as HabitType);
       }
@@ -80,64 +86,102 @@ function HabitWindow() {
     }
   }, [selectedItems]);
 
+  //:::::::::::::::::::::::::::::::::::::::::::::
+  // Functions
+  //::::::::::::::::::::::::::::::::::::::::::::::
+
   const onUpdateHabitName = (inputText: string) => {
+    //Creating a shallow copy of the habit item
     const copyHabitItem = { ...habitItem };
+    // Modifying the name property based on the inputText
     copyHabitItem.name = inputText;
+    //Updating the habit item state
     setHabitItem(copyHabitItem);
   };
 
+  //This callback function from the Repeat functional Component, update the habit Item object's frequency property
   function changeRepeatOption(repeatOptions: RepeatOption[]) {
+    //First we filter only the element we selected
     const filterIsSelected = repeatOptions.filter(
       (singleOption) => singleOption.isSelected
     );
 
+    //We extract only the name of the object
     const nameOfSelectedOption = filterIsSelected[0].name;
 
+    // We create a shallow copy of the habit Item
     const copyHabitsItem = { ...habitItem };
 
+    // Update the type of the frequency property
     copyHabitsItem.frequency[0].type = nameOfSelectedOption;
 
+    //Update the Habit Item to update the UI
     setHabitItem(copyHabitsItem);
+
+    //End of the function
   }
 
+  //This callback function update the days property in the habitItem
+  //object to store the days in a form of an array
   function changeDaysOption(allDays: DayOption[]) {
     const selectedDays = allDays
       .filter((singleDay) => singleDay.isSelected)
       .map((day) => day.name);
 
+    // We create a shallow copy of the habit Item
     const copyHabitsItem = { ...habitItem };
 
+    // Update the type of the frequency property
     copyHabitsItem.frequency[0].days = selectedDays;
 
+    //Update the Habit Item to update the UI
     setHabitItem(copyHabitsItem);
   }
 
   function changeWeeksOption(weeks: number) {
+    // We create a shallow copy of the habit Item
     const copyHabitsItem = { ...habitItem };
 
+    // Update the type of the frequency property
     copyHabitsItem.frequency[0].number = weeks;
 
+    //Update the Habit Item to update the UI
     setHabitItem(copyHabitsItem);
   }
 
+  //This callback function will update the notification property selected from the TimerPicker window
   function updateReminderTime(timeValue: string) {
+    // We create a shallow copy of the habit Item
     const copyHabitsItem = { ...habitItem };
 
+    // Update the notification Time propert
     copyHabitsItem.notificationTime = timeValue;
 
+    //Update the Habit Item to update the UI
     setHabitItem(copyHabitsItem);
   }
 
   function getSelectedAreaItems(selectedAreaItems: AreaType[]) {
+    // We create a shallow copy of the habit Item
     const copyHabitsItem = { ...habitItem };
 
+    // Update the areas property
     copyHabitsItem.areas = selectedAreaItems;
+    //Update the Habit Item to update the UI
     setHabitItem(copyHabitsItem);
   }
 
+  //:::::::::::::::::::::::::::::::::::::::::::::
+  // Use Effects Hooks
+  //::::::::::::::::::::::::::::::::::::::::::::::
+
+  //Update the icon property of the habitItem every time the icon selected is changed
   useEffect(() => {
+    //Creating a shallow copy of the habit item
     const copyHabitItem = { ...habitItem };
+    // Modifying the icon property
     copyHabitItem.icon = iconSelected;
+    //Updating the habit item state
     setHabitItem(copyHabitItem);
   }, [iconSelected]);
 
@@ -233,9 +277,11 @@ function InputNameAndIconButton({
       inputRef.current?.focus();
     }, 500);
 
+    //When the window is closed empty the input field by using the callback function
     if (!openHabitWindow) {
       onUpdateHabitName("");
     } else {
+      //if the selectedItems is not null set the input value to the selectedItems name
       if (selectedItems) {
         onUpdateHabitName(selectedItems.name);
         setIconSelected(selectedItems.icon);
@@ -315,14 +361,18 @@ function Repeat({
 
       return { ...singleOption, isSelected: false };
     });
+    //Change the local repeat Option Array
     setRepeatOptions(updateRepeatOptions);
+    //Trigger the callback to pass up the "updateRepeatOption" to the parent component
     onChangeOption(updateRepeatOptions);
   }
 
+  //Trigger the callBack function to pass in it the allDays array
   useEffect(() => {
     onChangeDaysOption(allDays);
   }, [allDays]);
 
+  //Trigger the callBack function to pass in it the weeks number
   useEffect(() => {
     onChangeWeeksOption(weeks);
   }, [weeks]);
@@ -331,12 +381,17 @@ function Repeat({
     return "frequency" in item && "notificationTime" in item;
   }
 
+  //This useEffect get the name of selection option and update it in the nameOfSelectedOption variable
   useEffect(() => {
+    // If the selectedItems is not null, it means that we are going to edit the habit
     if (selectedItems) {
+      //Assert the type of selectedItems
       const currentHabitSelected = selectedItems as HabitType;
+      //Get the name of the selected option
       const selectedOptionOfHabitSelected =
         currentHabitSelected.frequency[0].type;
 
+      //Update the name of the selected option based on the selectedOption
       const copyRepeatOptions = repeatOptions.map((singleOption) => {
         if (singleOption.name === selectedOptionOfHabitSelected) {
           return { ...singleOption, isSelected: true };
@@ -344,14 +399,19 @@ function Repeat({
         return { ...singleOption, isSelected: false };
       });
 
+      //Update the repeatOptions array
       setRepeatOptions(copyRepeatOptions);
     } else {
+      //if the selectedItems is null, it means that we are going to create a new habit
+      //set both items as false in the repeated options
       const copyRepeatOptions = repeatOptions.map((singleOption) => {
         return { ...singleOption, isSelected: false };
       });
 
+      //Set the first option as selected
       copyRepeatOptions[0].isSelected = true;
 
+      //Update the repeatOptions array
       setRepeatOptions(copyRepeatOptions);
     }
   }, [openHabitWindow]);
@@ -435,6 +495,7 @@ function DailyOptions({
     setAllDays(updatedAllDays);
   }
 
+  //This useEffect will set the selection to the Monday day every time the openHabitWindow is true
   useEffect(() => {
     if (openHabitWindow) {
       if (!selectedItems) {
@@ -446,8 +507,10 @@ function DailyOptions({
         setAllDays(updateSelectedDays);
       } else {
         const currentHabitSelected = selectedItems as HabitType;
+        //
         const selectedOptionOfHabitSelected =
           currentHabitSelected.frequency[0].days;
+        //
         const updateSelectedDays = allDays.map((singleDay) => {
           if (selectedOptionOfHabitSelected.includes(singleDay.name)) {
             return { ...singleDay, isSelected: true };
@@ -578,6 +641,12 @@ function Reminder({
     setOpenTimePickerWindow(true);
   }
 
+  //If there is selected items
+  //// 1. get the selected habit
+  //. 2. check if the notification is on
+  // 3. set the isOn state
+  // 4. update the UI
+  //If there is no selected items, set the isOn state to false
   useEffect(() => {
     if (selectedItems) {
       const currentHabitSelected = selectedItems as HabitType;
@@ -667,6 +736,7 @@ function SaveButton({ habit }: { habit: HabitType }) {
       }
     } else {
       editHabit({ allHabits, setAllHabits, habit, selectedItems });
+      //Close the window
       setOpenHabitWindow(false);
     }
 

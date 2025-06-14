@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import connectToDB from "@/app/lib/conntectToDB";
+import connectToDB from "@/app/lib/connectToDB";
 import HabitsCollection from "@/app/Models/HabitSchema";
 import { Error } from "mongoose";
 
@@ -52,8 +52,8 @@ export async function GET(req: any) {
 
 export async function DELETE(request: any) {
   try {
-    const { habitId } = await request.json(); // Get projectId from the request body
-    // Get clerkId from the query parameters
+    const { habitId } = await request.json(); 
+
 
     const habitToDelete = await HabitsCollection.findOneAndDelete({
       _id: habitId,
@@ -89,10 +89,8 @@ export async function PUT(request: any) {
       );
     }
 
-    // Connect to the database
     await connectToDB();
 
-    // Find the habit by habitId and update it
     const updatedHabit = await HabitsCollection.findOneAndUpdate(
       { _id: habitId },
       {
@@ -106,7 +104,7 @@ export async function PUT(request: any) {
           completedDays,
         },
       },
-      { returnDocument: "after" } // Return the updated document
+      { returnDocument: "after" } 
     );
 
     console.log(updatedHabit);

@@ -12,8 +12,8 @@ function AllHabitsTopBar() {
   const { isDarkMode } = darkModeObject;
   const userButtonAppearance = {
     elements: {
-      userButtonAvatarBox: "w-10 h-10", 
-      userButtonPopoverActionButton: "text-red-600",
+      userButtonAvatarBox: "w-10 h-10", // Custom width and height
+      userButtonPopoverActionButton: "text-red-600", // Custom text color for action buttons
     },
   };
 
@@ -26,8 +26,10 @@ function AllHabitsTopBar() {
       setOpenSideBar(false);
     }
 
+    // Event listener for window resize
     window.addEventListener("resize", handleResize);
 
+    // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
     };

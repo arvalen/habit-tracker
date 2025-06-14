@@ -1,4 +1,4 @@
-import connectToDB from "@/app/lib/conntectToDB";
+import connectToDB from "@/app/lib/connectToDB";
 import Area from "@/app/Models/AreaSchema";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
@@ -39,8 +39,7 @@ export async function GET(req: any) {
 
 export async function DELETE(request: any) {
   try {
-    const { areaId } = await request.json(); // Get projectId from the request body
-    // Get clerkId from the query parameters
+    const { areaId } = await request.json();
 
     const areaToDelete = await Area.findOneAndDelete({
       _id: areaId,
@@ -68,10 +67,8 @@ export async function PUT(request: any) {
       );
     }
 
-    // Connect to the database
     await connectToDB();
 
-    // Find the habit by habitId and update it
     const updateArea = await Area.findOneAndUpdate(
       { _id: areaId },
       {
@@ -80,7 +77,7 @@ export async function PUT(request: any) {
           icon,
         },
       },
-      { returnDocument: "after" } // Return the updated document
+      { returnDocument: "after" } 
     );
 
     console.log(updateArea);

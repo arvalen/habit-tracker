@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
-    {
-        clerkUserId: { type: String, unique: true, required: true },
-        EmailAddress: { type: String, required: true },
-    },
-    { timestamps: true }
+  {
+    clerkUserId: { type: String, unique: true, required: true },
+    emailAddress: { type: String, required: true },
+  },
+  { timestamps: true }
 );
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);
