@@ -265,7 +265,7 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
   async function addTheAllAreas() {
     const allArea = {
       name: "All",
-      icon: "faLayerGroup",
+      icon: "faGlobe",
       userId: session?.user?.id as string,
     };
 
