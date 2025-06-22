@@ -114,8 +114,19 @@ function TimerPicker({
       (singleMeridiem) => singleMeridiem.isSelected
     )[0].text;
 
-    const selectedTimeFormatted =
-      timeValues[0].text + ":" + timeValues[1].text + " " + meridiemSelected;
+    let hour = parseInt(timeValues[0].text, 10);
+
+    if (meridiemSelected === 'PM' && hour < 12) {
+      hour += 12;
+    }
+    if (meridiemSelected === 'AM' && hour === 12) {
+      hour = 0;
+    }
+
+    const hour24 = hour.toString().padStart(2, '0');
+    const minute = timeValues[1].text.padStart(2, '0');
+
+    const selectedTimeFormatted = `${hour24}:${minute}`;
 
     onSaveTime(selectedTimeFormatted);
     setOpenTimePickerWindow(false);

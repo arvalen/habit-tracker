@@ -173,7 +173,27 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
   const [searchInput, setSearchInput] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log(isLoading);
+  useEffect(() => {
+    const checkNotifications = () => {
+      const now = new Date();
+      const currentTime = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+
+      allHabits.forEach(habit => {
+        if (habit.isNotificationOn && habit.notificationTime === currentTime) {
+          if (Notification.permission === 'granted') {
+            new Notification(`Time for your habit: ${habit.name}`, {
+              body: "Let's do this! You've got it.",
+              icon: '/app.svg' 
+            });
+          }
+        }
+      });
+    };
+
+    const intervalId = setInterval(checkNotifications, 60000); // Check every minute
+
+    return () => clearInterval(intervalId); // Cleanup on component unmount
+  }, [allHabits]);
 
   useEffect(() => {
     const fetchAllHabits = async () => {
