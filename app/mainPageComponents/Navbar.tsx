@@ -3,11 +3,11 @@
 import React from "react";
 import AppIcon from "../SVG_Icons/AppIcon";
 import Link from "next/link";
-import { useAuth } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import LogoAnName from "../Components/LogoAndName";
 
 function Navbar() {
-  const { userId } = useAuth();
+  const { data: session, status } = useSession();
   const defaultColor = "#0048b5";
   const backgroundColorObject = { backgroundColor: defaultColor };
   return (
@@ -23,7 +23,9 @@ function Navbar() {
           {/* The buttons */}
 
           <div>
-            {userId ? (
+            {status === "loading" ? (
+              <div className="text-gray-600">Loading...</div>
+            ) : session ? (
               <Link href={"/dashboard"}>
                 <button
                   style={backgroundColorObject}

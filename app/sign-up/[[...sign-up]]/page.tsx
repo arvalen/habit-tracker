@@ -1,17 +1,25 @@
-import { SignUp } from "@clerk/nextjs";
-import React from "react";
+"use client";
 
-function SignUpPage() {
-  const defaultColor = "#0048b5";
-  const gradientColor = `linear-gradient(to bottom, ${defaultColor}, #0048b5)`;
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+export default function SignUp() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/sign-in");
+  }, [router]);
+
   return (
-    <div
-      style={{ background: gradientColor }}
-      className="flex justify-center items-center flex-col gap-10 w-full h-screen"
-    >
-      <SignUp />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="text-center">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          Redirecting to Sign In...
+        </h2>
+        <p className="text-gray-600">
+          Please sign in with your Google or GitHub account to get started.
+        </p>
+      </div>
     </div>
   );
 }
-
-export default SignUpPage;

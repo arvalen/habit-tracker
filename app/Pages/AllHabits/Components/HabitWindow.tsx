@@ -10,6 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { memo, useEffect, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 
 import IconsWindow from "./IconsWindow/IconsWindow";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -22,7 +23,6 @@ import toast from "react-hot-toast";
 import AllHabits from "../AllHabits";
 
 import { editHabit } from "@/app/utils/allHabitsUtils/editHabits";
-import { useUser } from "@clerk/nextjs";
 
 type RepeatOption = {
   name: string;
@@ -41,13 +41,13 @@ function HabitWindow() {
   const { openHabitWindow } = habitWindowObject;
   const { isDarkMode } = darkModeObject;
   const { setSelectedItems, selectedItems } = selectedItemsObject;
-  const { user } = useUser();
+  const { data: session } = useSession();
   //
   const [habitItem, setHabitItem] = useState<HabitType>({
     _id: "",
     name: "",
     icon: faFlask,
-    clerkUserId: user?.id || "",
+    userId: session?.user?.id || "",
     frequency: [{ type: "Daily", days: ["Mo"], number: 1 }],
     notificationTime: "",
     isNotificationOn: false,
@@ -62,7 +62,7 @@ function HabitWindow() {
       setHabitItem({
         _id: "",
         name: "",
-        clerkUserId: user?.id || "",
+        userId: session?.user?.id || "",
         icon: faFlask,
         frequency: [{ type: "Daily", days: ["Mo"], number: 1 }],
         notificationTime: "",
@@ -75,7 +75,7 @@ function HabitWindow() {
         setHabitItem(selectedItems as HabitType);
       }
     }
-  }, [openHabitWindow, user]);
+  }, [openHabitWindow, session]);
 
   useEffect(() => {
     if (selectedItems) {

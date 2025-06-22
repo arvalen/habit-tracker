@@ -23,7 +23,7 @@ const CompletedDaySchema = new Schema({
 const HabitSchema = new Schema({
   name: { type: String, required: true },
   icon: { type: String, required: true },
-  clerkUserId: { type: String, required: true },
+  userId: { type: String, required: true },
   frequency: { type: [FrequencySchema], required: true },
   notificationTime: { type: String },
   isNotificationOn: { type: Boolean, required: true },

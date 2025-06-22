@@ -4,7 +4,7 @@ import { Schema, model, models } from "mongoose";
 const AreaSchema = new Schema({
   name: { type: String, required: true },
   icon: { type: String, required: true },
-  clerkUserId: { type: String, required: true },
+  userId: { type: String, required: true },
 });
 
 // Check if the model already exists (to avoid recompiling during hot reloading in development)

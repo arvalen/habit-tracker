@@ -1,16 +1,17 @@
-import React from "react";
+"use client";
+
+import { signOut } from "next-auth/react";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SignOutButton } from "@clerk/nextjs";
-function LogoutSection() {
-  const logOutObject = { name: "Log Out", icon: faRightFromBracket };
+
+export default function LogoutSection() {
   return (
-    <div className="flex gap-2 text-slate-400  items-center ml-8 p-2 mt-28 hover:text-customBlue transition-all ">
-      <FontAwesomeIcon width={20} height={20} icon={logOutObject.icon} />
-      <div className="">
-        <SignOutButton />
-      </div>
+    <div
+      onClick={() => signOut({ callbackUrl: "/" })}
+      className="flex gap-2 text-slate-400 items-center ml-8 p-2 mt-28 hover:text-red-500 transition-all cursor-pointer"
+    >
+      <FontAwesomeIcon width={20} height={20} icon={faRightFromBracket} />
+      <span>Log Out</span>
     </div>
   );
 }
-export default LogoutSection;

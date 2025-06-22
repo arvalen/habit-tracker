@@ -1,36 +1,45 @@
+import { NextResponse } from "next/server";
 import connectToDB from "@/app/lib/connectToDB";
 import Area from "@/app/Models/AreaSchema";
-import { NextApiRequest, NextApiResponse } from "next";
-import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/authOptions";
 
 export async function POST(req: Request) {
   try {
-    await connectToDB();
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-    const { name, icon, clerkUserId } = await req.json();
+    const { name, icon } = await req.json();
+
+    await connectToDB();
 
     const area = new Area({
       name,
       icon,
-      clerkUserId,
+      userId: session.user.id,
     });
-
-    console.log(area);
 
     const savedArea = await area.save();
 
     return NextResponse.json({ area: savedArea });
   } catch (error) {
-    console.error(error);
     return NextResponse.json({ error: error }, { status: 400 });
   }
 }
 
 export async function GET(req: any) {
   try {
-    const clerkId = req.nextUrl.searchParams.get("clerkId");
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     await connectToDB();
-    const areas = await Area.find({ clerkUserId: clerkId });
+    const areas = await Area.find({ userId: session.user.id });
     return NextResponse.json({ areas: areas });
   } catch (error) {
     return NextResponse.json({ error: error }, { status: 400 });

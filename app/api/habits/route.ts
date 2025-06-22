@@ -1,14 +1,20 @@
 import { NextResponse } from "next/server";
 import connectToDB from "@/app/lib/connectToDB";
 import HabitsCollection from "@/app/Models/HabitSchema";
-import { Error } from "mongoose";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/authOptions";
 
 export async function POST(req: Request) {
   try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const {
       name,
       icon,
-      clerkUserId,
       frequency,
       notificationTime,
       isNotificationOn,
@@ -21,7 +27,7 @@ export async function POST(req: Request) {
     const habit = new HabitsCollection({
       name,
       icon,
-      clerkUserId,
+      userId: session.user.id,
       frequency,
       notificationTime,
       isNotificationOn,
@@ -41,9 +47,14 @@ export async function POST(req: Request) {
 
 export async function GET(req: any) {
   try {
-    const clerkId = req.nextUrl.searchParams.get("clerkId");
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     await connectToDB();
-    const habits = await HabitsCollection.find({ clerkUserId: clerkId });
+    const habits = await HabitsCollection.find({ userId: session.user.id });
     return NextResponse.json({ habits: habits });
   } catch (error) {
     return NextResponse.json({ error: error }, { status: 400 });
@@ -52,11 +63,17 @@ export async function GET(req: any) {
 
 export async function DELETE(request: any) {
   try {
-    const { habitId } = await request.json(); 
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
+    const { habitId } = await request.json(); 
 
     const habitToDelete = await HabitsCollection.findOneAndDelete({
       _id: habitId,
+      userId: session.user.id,
     });
 
     if (!habitToDelete) {
@@ -71,6 +88,12 @@ export async function DELETE(request: any) {
 
 export async function PUT(request: any) {
   try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const habitId = request.nextUrl.searchParams.get("habitId");
     const {
       name,
@@ -92,7 +115,7 @@ export async function PUT(request: any) {
     await connectToDB();
 
     const updatedHabit = await HabitsCollection.findOneAndUpdate(
-      { _id: habitId },
+      { _id: habitId, userId: session.user.id },
       {
         $set: {
           name,

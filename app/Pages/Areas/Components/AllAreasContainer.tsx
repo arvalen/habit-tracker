@@ -1,3 +1,5 @@
+"use client";
+
 import { faFlask, faStairs } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconButton } from "@mui/material";
@@ -13,9 +15,12 @@ import { v4 as uuidv4 } from "uuid";
 import { useEffect } from "react";
 import addNewArea from "@/app/utils/allAreasUtils/addNewArea";
 import toast from "react-hot-toast";
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 import editArea from "@/app/utils/allAreasUtils/editArea";
 import { HabitType } from "@/app/Types/GlobalTypes";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { iconToText } from "@/app/Pages/AllHabits/Components/IconsWindow/IconData";
 
 function AllAreasContainer() {
   const {
@@ -27,13 +32,13 @@ function AllAreasContainer() {
     allHabitsObject: { allHabits, setAllHabits },
   } = useGlobalContextProvider();
 
-  const { user } = useUser();
+  const { data: session } = useSession();
 
   const [areaItem, setAreaItem] = useState<AreaType>({
     _id: "",
     name: "",
     icon: faFlask,
-    clerkUserId: "",
+    userId: session?.user?.id as string,
   });
 
   function handleOnClose() {
@@ -82,24 +87,17 @@ function AllAreasContainer() {
 
   useEffect(() => {
     if (!openAreaForm) {
-      setAreaItem((prevAreaItem) => ({
-        ...prevAreaItem,
-        name: "",
-      }));
-      return;
-
+      setAreaItem({
+        ...areaItem,
+        _id: "",
+        userId: session?.user?.id as string,
+      });
     } else {
-      if (!selectedItems) {
-        setAreaItem({
-          ...areaItem,
-          _id: "",
-          clerkUserId: user?.id as string,
-        });
-      } else {
-        setAreaItem(selectedItems);
+      if (selectedItems) {
+        setAreaItem(selectedItems as AreaType);
       }
     }
-  }, [openAreaForm]);
+  }, [openAreaForm, session]);
 
   useEffect(() => {
     setAreaItem({
@@ -107,6 +105,51 @@ function AllAreasContainer() {
       icon: iconSelected,
     });
   }, [iconSelected]);
+
+  const [areaName, setAreaName] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!areaName.trim()) {
+      toast.error("Please enter an area name");
+      return;
+    }
+
+    const areaData = {
+      name: areaName,
+      icon: iconToText(iconSelected),
+      userId: session?.user?.id || "",
+    };
+
+    try {
+      const response = await fetch("/api/areas", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(areaData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create area");
+      }
+
+      const data = await response.json();
+      const newArea: AreaType = {
+        ...data.area,
+        icon: textToIcon(data.area.icon) as IconProp,
+      };
+
+      setAllAreas([...allAreas, newArea]);
+      setOpenAreaForm(false);
+      setAreaName("");
+      toast.success("Area created successfully!");
+    } catch (error) {
+      console.error("Error creating area:", error);
+      toast.error("Failed to create area");
+    }
+  };
 
   return (
     <div
@@ -132,6 +175,16 @@ function AllAreasContainer() {
           <AreaCard singleArea={singleArea} />
         </div>
       ))}
+
+      <div
+        onClick={() => setOpenAreaForm(true)}
+        className="bg-gray-50 p-4 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors"
+      >
+        <div className="flex items-center gap-2 text-gray-500">
+          <FontAwesomeIcon icon={faPlus} />
+          <span>Add New Area</span>
+        </div>
+      </div>
     </div>
   );
 }

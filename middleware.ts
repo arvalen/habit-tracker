@@ -1,7 +1,16 @@
-import { clerkMiddleware } from "@clerk/nextjs/server";
+import { withAuth } from "next-auth/middleware";
 
-export default clerkMiddleware();
+export default withAuth(
+  function middleware(req) {
+    // Add any custom middleware logic here if needed
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => !!token,
+    },
+  }
+);
 
 export const config = {
-  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
+  matcher: ["/dashboard/:path*", "/api/habits/:path*", "/api/areas/:path*"],
 };

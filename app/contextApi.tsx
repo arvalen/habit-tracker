@@ -40,7 +40,7 @@ import {
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { getDateString } from "./utils/allHabitsUtils/DateFunctions";
 import { v4 as uuidv4 } from "uuid";
-import { useUser } from "@clerk/nextjs";
+import { useSession } from "next-auth/react";
 
 const GlobalContext = createContext<GlobalContextType>({
   menuItemsObject: {
@@ -166,7 +166,7 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
   const [selectedItems, setSelectedItems] = useState<
     HabitType | AreaType | null
   >(null);
-  const { isLoaded, isSignedIn, user } = useUser();
+  const { data: session, status } = useSession();
   const [openAreaForm, setOpenAreaForm] = useState(false);
   const [openIconWindow, setOpenIconWindow] = useState(false);
   const [iconSelected, setIconSelected] = useState<IconProp>(faFlask);
@@ -178,7 +178,7 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const fetchAllHabits = async () => {
       try {
-        const response = await fetch(`/api/habits?clerkId=${user?.id}`);
+        const response = await fetch(`/api/habits?userId=${session?.user?.id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch habits");
         }
@@ -219,7 +219,7 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
 
     async function fetchAllAreas() {
       try {
-        const response = await fetch(`/api/areas?clerkId=${user?.id}`);
+        const response = await fetch(`/api/areas?userId=${session?.user?.id}`);
         if (!response.ok) {
           throw new Error("Failed to fetch areas");
         }
@@ -236,38 +236,38 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
 
             setAllAreas([updatedArea]);
           }
+        } else {
+          const updatedAreas = data.areas.map((area: AreaType) => {
+            if (typeof area.icon === "string") {
+              return {
+                ...area,
+                icon: textToIcon(area.icon) as IconProp,
+              };
+            }
+            return area;
+          });
 
-          return;
+          setAllAreas(updatedAreas);
         }
-
-        const updatedAreas = data.areas.map((area: AreaType) => {
-          if (typeof area.icon === "string") {
-            return {
-              ...area,
-              icon: textToIcon(area.icon) as IconProp,
-            };
-          }
-          return area;
-        });
-
-        setAllAreas(updatedAreas);
-      } catch (error) {}
+      } catch (error) {
+        console.error("Error fetching areas:", error);
+      }
     }
 
-    if (isLoaded && isSignedIn) {
+    if (status === "authenticated" && session?.user?.id) {
       fetchAllHabits();
       fetchAllAreas();
+    } else if (status === "unauthenticated") {
+      setIsLoading(false);
     }
-  }, [isLoaded, isSignedIn, user?.id]);
+  }, [session, status]);
 
   async function addTheAllAreas() {
     const allArea = {
-      icon: iconToText(faGlobe),
       name: "All",
-      clerkUserId: user?.id as string,
+      icon: "faLayerGroup",
+      userId: session?.user?.id as string,
     };
-
-    console.log(user);
 
     try {
       const response = await fetch("/api/areas", {
@@ -275,22 +275,22 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify(allArea),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to add an area");
+        throw new Error("Failed to add area");
       }
-      //Extract the _id from the response
+      
       const data = await response.json();
       const { _id } = data.area;
-
-      //Update the _id of the area
       const updatedIdOfArea = { ...allArea, _id: _id };
 
       return updatedIdOfArea;
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error adding default area:", error);
+      return null;
+    }
   }
 
   //Each time the menu items are updated, the sidebar is closed
@@ -388,7 +388,13 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
 }
 
 export function useGlobalContextProvider() {
-  return useContext(GlobalContext);
+  const context = useContext(GlobalContext);
+  if (!context) {
+    throw new Error(
+      "useGlobalContextProvider must be used within a GlobalContextProvider"
+    );
+  }
+  return context;
 }
 
 export default GlobalContextProvider;
