@@ -53,12 +53,10 @@ function AllAreasContainer() {
 
   function handleOnClick() {
     if (!selectedItems) {
-      //Check if the area name is not empty
       if (areaItem.name.trim() === "") {
         return toast.error("The area name field is still empty");
       }
 
-      //Check if there's no area with the same name
       const areaExist = allAreas.some(
         (singleArea) =>
           singleArea.name.toLocaleLowerCase() ===
@@ -83,7 +81,6 @@ function AllAreasContainer() {
   }
 
   useEffect(() => {
-    //When the form is closed reset the area item
     if (!openAreaForm) {
       setAreaItem((prevAreaItem) => ({
         ...prevAreaItem,
@@ -91,11 +88,8 @@ function AllAreasContainer() {
       }));
       return;
 
-      //When the window is opened
     } else {
-      //If we are going to create an new are
       if (!selectedItems) {
-        //Generate a new Id when it is opened
         setAreaItem({
           ...areaItem,
           _id: "",
@@ -107,7 +101,6 @@ function AllAreasContainer() {
     }
   }, [openAreaForm]);
 
-  //Change the icon property of the area item when the iconSelected changes
   useEffect(() => {
     setAreaItem({
       ...areaItem,
@@ -204,7 +197,7 @@ function AreaCard({ singleArea }: { singleArea: AreaType }) {
       {/* Icons and texts */}
       <div className="flex  items-center gap-4">
         <FontAwesomeIcon
-          className="w-5 h-5 text-customRed"
+          className="w-5 h-5 text-customBlue"
           height={20}
           width={20}
           icon={singleArea.icon}

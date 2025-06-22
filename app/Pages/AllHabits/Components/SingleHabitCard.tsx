@@ -60,7 +60,6 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
     const habitToUpdateInTheServer = convertIconsToTextOfHabits(updatedHabits);
     editTheHabitInServer(habitToUpdateInTheServer);
 
-    //Update the habits state
     const updateAllHabits: HabitType[] = allHabits.map((habit) => {
       if (habit._id === updatedHabits._id) {
         return updatedHabits;
@@ -82,7 +81,6 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
     const habitToUpdateInTheServer = convertIconsToTextOfHabits(updatedHabits);
     editTheHabitInServer(habitToUpdateInTheServer);
 
-    //Update the habits state
     const updateAllHabits: HabitType[] = allHabits.map((habit) => {
       if (habit._id === updatedHabits._id) {
         return updatedHabits;
@@ -100,11 +98,8 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
     const left = rect.left;
     setDropDownPositions({ top, left });
     console.log(singleHabit);
-    //Open the dropdown
     event.stopPropagation();
-    //Open the dropdown
     setOpenDropDown(true);
-    //Select the single Habit
     setSelectedItems(singleHabit);
   }
 
@@ -116,7 +111,6 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
   }, [singleHabit, selectedCurrentDate, allHabits]);
 
   return (
-    //Element for the whole Habit cards
     <div className="  flex p-3 items-center justify-between  ">
       {/* The rounded checkbox */}
       <Checkbox
@@ -145,7 +139,7 @@ export function HabitCard({ singleHabit }: { singleHabit: HabitType }) {
           <div className="flex gap-2 justify-between   ">
             <div className="flex gap-2 items-center">
               <FontAwesomeIcon
-                className="  p-3 rounded-full w-4 h-4 bg-customRed text-white"
+                className="  p-3 rounded-full w-4 h-4 bg-customBlue text-white"
                 height={20}
                 width={20}
                 icon={singleHabit.icon}

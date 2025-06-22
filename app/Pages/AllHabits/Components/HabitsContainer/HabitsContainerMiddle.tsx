@@ -33,14 +33,12 @@ export default function HabitsContainerMiddle() {
   const { selectedAreaString } = selectedAreaStringObject;
 
   useEffect(() => {
-    // Get the first two characters of the selectedCurrentDate
     const getTwoFirstDayLetter = getCurrentDayName(selectedCurrentDate).slice(
       0,
       2
     );
 
     let filteredHabitsByArea: HabitType[] = [];
-    // Filter habits based on frequency
     const filteredHabitsByFrequency = allHabits.filter((singleHabit) => {
       return singleHabit.frequency[0].days.some(
         (day) => day === getTwoFirstDayLetter
@@ -61,11 +59,9 @@ export default function HabitsContainerMiddle() {
 
     console.log(filterBySearch);
 
-    // Set the filtered habits state
     setAllFilteredHabits(filterBySearch);
   }, [selectedCurrentDate, allHabits, selectedAreaString, searchInput]);
 
-  // Check if all habits for the selected date are completed
   const isAllHabitsCompleted =
     allFilteredHabits.length > 0 &&
     allFilteredHabits.every((habit) => {
@@ -91,8 +87,8 @@ export default function HabitsContainerMiddle() {
               {isAllHabitsCompleted && (
                 <div className="flex justify-center items-center p-5 flex-col">
                   <SuccessIcon color={defaultColor.textColor50} />
-                  <span className="text-[13px] text-gray-400 w-64 text-center mt-6">
-                    {`Great job! You've completed all your habits for today. 🌟`}
+                  <span className="text-[13px] text-gray-800 w-64 text-center mt-6">
+                    {`You completed all your habits for today. Proud of you, King 👑. Let’s do it again tomorrow!`}
                   </span>
                 </div>
               )}

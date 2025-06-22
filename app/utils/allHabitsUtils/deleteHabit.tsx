@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction } from "react";
 import { HabitType, AreaType } from "@/app/Types/GlobalTypes";
 import toast from "react-hot-toast";
 
-//
 export async function deleteHabit(
   allHabits: HabitType[],
   setAllHabits: Dispatch<SetStateAction<HabitType[]>>,

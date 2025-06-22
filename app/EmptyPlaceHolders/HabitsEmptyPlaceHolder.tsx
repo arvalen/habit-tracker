@@ -1,6 +1,7 @@
 import { ListIcon } from "../Assets/ListIcon";
 
 import { defaultColor } from "@/colors";
+
 export default function EmptyHabitsPlaceHolder() {
   return (
     <div className="flex justify-center items-center p-5 flex-col">

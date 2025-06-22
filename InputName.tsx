@@ -42,7 +42,7 @@ export default function InputName({
         />
 
         <FontAwesomeIcon
-          className="bg-mainColor mt-[1px] p-4 rounded-md text-white cursor-pointer bg-customRed "
+          className="bg-mainColor mt-[1px] p-4 rounded-md text-white cursor-pointer bg-customBlue "
           height={16}
           width={20}
           onClick={() => setOpenIconWindow(true)}

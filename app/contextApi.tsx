@@ -176,7 +176,6 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
   console.log(isLoading);
 
   useEffect(() => {
-    //Fetch data from the server
     const fetchAllHabits = async () => {
       try {
         const response = await fetch(`/api/habits?clerkId=${user?.id}`);
@@ -185,7 +184,6 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
         }
         const data: { habits: HabitType[] } = await response.json();
 
-        //Convert the icon of the habit from string to IconProp
         const updatedHabits = data.habits.map((habit: HabitType) => {
           if (typeof habit.icon === "string") {
             return {
@@ -196,7 +194,6 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
           return habit;
         });
 
-        //Update the icons in the areas property from string to icon props
         const updatedHabitsWithAreas = updatedHabits.map((habit: HabitType) => {
           const updatedAreas = habit.areas.map((area: AreaType) => {
             if (typeof area.icon === "string") {
@@ -210,7 +207,6 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
           return { ...habit, areas: updatedAreas };
         });
 
-        // Update the habits array with the updated icons
         console.log(updatedHabitsWithAreas);
 
         setAllHabits(updatedHabitsWithAreas);
@@ -232,7 +228,6 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
         //Create the All Area if the user has no areas and the first time the user opens the app
         if (data.areas.length === 0) {
           const allArea = await addTheAllAreas();
-          //Convert the icon of the area from string to IconProp
           if (typeof allArea?.icon === "string") {
             const updatedArea = {
               ...allArea,
@@ -244,7 +239,7 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
 
           return;
         }
-        //Convert the icons property from string to IconProp
+
         const updatedAreas = data.areas.map((area: AreaType) => {
           if (typeof area.icon === "string") {
             return {
@@ -290,7 +285,7 @@ function GlobalContextProvider({ children }: { children: ReactNode }) {
       //Extract the _id from the response
       const data = await response.json();
       const { _id } = data.area;
-      //
+
       //Update the _id of the area
       const updatedIdOfArea = { ...allArea, _id: _id };
 

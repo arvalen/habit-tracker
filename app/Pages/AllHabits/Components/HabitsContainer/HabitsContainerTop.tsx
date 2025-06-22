@@ -49,14 +49,14 @@ export default function HabitsContainerTop() {
         <div className="flex gap-1 ml-4">
           <div
             onClick={() => updateDate("prev")}
-            className="text-customRed cursor-pointer"
+            className="text-customBlue cursor-pointer"
           >
             <ArrowCircleLeftOutlinedIcon />
           </div>
 
           <div
             onClick={() => updateDate("next")}
-            className="text-customRed cursor-pointer"
+            className="text-customBlue cursor-pointer"
           >
             <ArrowCircleRightOutlinedIcon />
           </div>
@@ -65,7 +65,7 @@ export default function HabitsContainerTop() {
       </div>
       <button
         onClick={() => setOpenHabitWindow(true)}
-        className="flex gap-2 items-center bg-customRed p-3 text-white 
+        className="flex gap-2 items-center bg-customBlue p-3 text-white 
         rounded-md text-sm"
       >
         <FontAwesomeIcon icon={faPlus} />

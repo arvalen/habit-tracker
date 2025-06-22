@@ -6,7 +6,7 @@ import { useGlobalContextProvider } from "./app/contextApi";
 import { darkModeColor, defaultColor } from "./colors";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag } from "@fortawesome/free-regular-svg-icons";
-//
+
 interface DataFormModalProps {
   isOpen: boolean;
   FormTitle: string;
@@ -59,7 +59,7 @@ export default function DataFormModal({
 
           <Button
             onClick={onClick}
-            className="bg-customRed text-white mt-10 p-3 px-6"
+            className="bg-customBlue text-white mt-10 p-3 px-6"
           >
             {FormTitle === "Add Area" ? "Add Area" : "Edit Area"}
           </Button>

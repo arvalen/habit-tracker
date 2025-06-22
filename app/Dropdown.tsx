@@ -54,7 +54,7 @@ function DropDown() {
 
   function handleClickOption(index: number) {
     switch (index) {
-      //Edit option
+
       case 0:
         if (isHabitType(selectedItems)) {
           setOpenHabitWindow(true);

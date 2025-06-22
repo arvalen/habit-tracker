@@ -28,7 +28,6 @@ export async function deleteArea(
       }
     });
 
-    //Convert all the icons to text of all UpdatedHabits
     const convertIconToTextOfAllHabits: HabitType[] = updateAllHabits.map(
       (habit) => {
         return {

@@ -98,14 +98,14 @@ function MainStatistics() {
       className="flex mx-4 flex-col gap-6 justify-center items-center mt-14
           rounded-xl p-5 pt-7   "
     >
-      <span className="font-bold text-xl cursor-pointer hover:text-customRed">
+      <span className="font-bold text-xl cursor-pointer hover:text-customBlue">
         Statistics
       </span>
       {/* the circular progress bar */}
       <div className="relative pt-3">
         <CircularProgressBar progress={progress} />
         <div className="flex flex-col justify-center items-center absolute top-[59%] left-1/2 transform -translate-x-1/2 -translate-y-1/2  ">
-          <span className="font-bold text-xl text-customRed">
+          <span className="font-bold text-xl text-customBlue">
             {progress.toFixed(0)}%
           </span>
           <span className="text-[11px] text-slate-400 text-center mt-1">{`Current Day's Progress`}</span>
@@ -115,7 +115,7 @@ function MainStatistics() {
       <div className=" my-4  flex justify-center gap-6 flex-wrap items-center    w-full">
         {statisticsInfo.map((singleItem, singleItemIndex) => (
           <div className=" flex items-center gap-3" key={singleItemIndex}>
-            <div className="w-2 h-2 bg-customRed rounded-full"></div>
+            <div className="w-2 h-2 bg-customBlue rounded-full"></div>
             <div className="text-[12px]">
               <span className="flex flex-col font-bold  ">
                 {singleItem.num}

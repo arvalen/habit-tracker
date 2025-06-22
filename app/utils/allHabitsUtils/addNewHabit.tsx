@@ -16,10 +16,8 @@ export async function addNewHabit({
 }) {
   const { icon, areas } = habit;
 
-  // Convert the main icon to text
   const habitIconText = iconToText(icon);
 
-  // Make a copy of the areas array and convert icons to text
   const areasCopy = areas.map((area) => ({
     ...area,
     icon: iconToText(area.icon as IconProp),
@@ -50,8 +48,6 @@ export async function addNewHabit({
     setAllHabits([...allHabits, updatedIdOfHabit]);
 
     if (updatedIdOfHabit.isNotificationOn) {
-      //notificationTime: "09:49 PM"
-      //days ['Mo', 'We', 'Su']
       scheduleNotifications(
         updatedHabit.notificationTime,
         updatedHabit.frequency[0].days,

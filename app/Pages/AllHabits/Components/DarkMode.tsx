@@ -51,7 +51,7 @@ function DarkMode() {
         >
           <FontAwesomeIcon
             className={`${
-              singleItem.isSelected ? "text-customRed" : "text-gray-300"
+              singleItem.isSelected ? "text-customBlue" : "text-gray-300"
             } cursor-pointer`}
             icon={singleItem.icon}
             width={20}

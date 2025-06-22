@@ -36,7 +36,7 @@ function HabitsCompleted() {
       <div className="mt-7  opacity-50  ">
         <div className="mt-10 w-full flex justify-center">
           {areAllHabitsNotCompleted && (
-            <p className="text-sm text-gray-400 w-72  text-center">{`Habit stacking is like a superpower! Don't let it go to waste!`}</p>
+            <p className="text-sm text-gray-400 w-72  text-center">{`Hey King 👑 , small habits can change your whole game. Own them!"`}</p>
           )}
         </div>
 

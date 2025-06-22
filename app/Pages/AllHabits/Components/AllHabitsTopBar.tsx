@@ -12,8 +12,8 @@ function AllHabitsTopBar() {
   const { isDarkMode } = darkModeObject;
   const userButtonAppearance = {
     elements: {
-      userButtonAvatarBox: "w-10 h-10", // Custom width and height
-      userButtonPopoverActionButton: "text-red-600", // Custom text color for action buttons
+      userButtonAvatarBox: "w-10 h-10", 
+      userButtonPopoverActionButton: "text-red-600", 
     },
   };
 
@@ -26,10 +26,8 @@ function AllHabitsTopBar() {
       setOpenSideBar(false);
     }
 
-    // Event listener for window resize
     window.addEventListener("resize", handleResize);
 
-    // Cleanup
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -52,11 +50,11 @@ function AllHabitsTopBar() {
 
         <div className="flex flex-col max-md:hidden ">
           <span className="text-xl">
-            <span className="font-bold">Hi There</span>
+            <span className="font-bold">Hi King 👑</span>
             <span className="font-light"></span>
           </span>
-          <span className="font-light text-[12px] text-gray-400">
-            welcome back!
+          <span className="font-light text-[12px] text-gray-900">
+            Welcome Back!
           </span>
         </div>
       </div>

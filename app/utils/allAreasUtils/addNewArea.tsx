@@ -14,11 +14,9 @@ export default async function addNewArea({
   setAllAreas: React.Dispatch<React.SetStateAction<AreaType[]>>;
 }) {
   try {
-    //Convert the icon to text
     const { icon } = areaItem;
     const areaIconText = iconToText(icon as IconProp);
 
-    //Update the icon property in the area object
     const updatedArea = { ...areaItem, icon: areaIconText };
 
     try {
@@ -34,10 +32,10 @@ export default async function addNewArea({
       if (!response.ok) {
         throw new Error("Failed to add habit");
       }
+      
       //Extract the _id from the response
       const data = await response.json();
       const { _id } = data.area;
-      //
       //Update the _id of the area
       const updatedIdOfArea = { ...areaItem, _id: _id };
 

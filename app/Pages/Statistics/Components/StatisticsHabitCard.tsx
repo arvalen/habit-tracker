@@ -9,11 +9,9 @@ import CalendarHeatmap from "react-calendar-heatmap";
 import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { HabitType } from "@/app/Types/GlobalTypes";
 import "react-calendar-heatmap/dist/styles.css";
-import "@/app/styles/calendarHeatmap.css"; // Ensure you import the base styles
+import "@/app/styles/calendarHeatmap.css"; 
 import { calculateStreak } from "./StatisticsBoard";
 
-//
-//
 
 export default function StatisticsHabitCard({ habit }: { habit: HabitType }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -43,7 +41,7 @@ export default function StatisticsHabitCard({ habit }: { habit: HabitType }) {
       <div className="flex justify-between items-center">
         <div className="flex gap-3 items-center">
           {/* Icon */}
-          <div className="bg-customRed w-10 h-10 rounded-full p-3 flex items-center justify-center text-white">
+          <div className="bg-customBlue w-10 h-10 rounded-full p-3 flex items-center justify-center text-white">
             <FontAwesomeIcon icon={faBook} />
           </div>
           {/* Habit Name */}

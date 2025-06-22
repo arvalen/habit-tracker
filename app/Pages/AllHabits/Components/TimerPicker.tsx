@@ -5,7 +5,6 @@ import { defaultColor } from "@/colors";
 import { darkModeColor } from "@/colors";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
-//Types
 type TimeValue = {
   text: string;
   isSelected: boolean;
@@ -16,7 +15,6 @@ function TimerPicker({
 }: {
   onSaveTime: (timeValue: string) => void;
 }) {
-  // Constants
   const { darkModeObject, openTimePickerObject } = useGlobalContextProvider();
   const { isDarkMode } = darkModeObject;
   const { openTimePickerWindow, setOpenTimePickerWindow } =
@@ -28,19 +26,14 @@ function TimerPicker({
     { text: "12", isSelected: false },
   ]);
 
-  // Meridiem
   const [meridiem, setMeridiem] = useState([
     { text: "AM", isSelected: true },
     { text: "PM", isSelected: false },
   ]);
 
-  //Refs
   const hoursRef = useRef<HTMLInputElement>(null);
   const minutesRef = useRef<HTMLInputElement>(null);
-  //Functions
-  //---------
 
-  // Update the meridiem variable
   function updateMeridiemFx(clickedIndex: number) {
     const updateMeridiem = meridiem.map((singleMeridiem, index) => {
       if (index === clickedIndex) {
@@ -53,7 +46,6 @@ function TimerPicker({
     setMeridiem(updateMeridiem);
   }
 
-  // Update the timesValues variable
   function updateTimeValues(clickedIndex: number) {
     const updateTimeValues = timeValues.map((singleTimeValue, index) => {
       if (index === clickedIndex) {
@@ -66,7 +58,6 @@ function TimerPicker({
     setTimeValues(updateTimeValues);
   }
 
-  //Update the time values text in the array
   function updateTimeValuesText(
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -75,7 +66,6 @@ function TimerPicker({
     const currentText = event.target.value;
     const parsedValue = parseInt(currentText, 10);
 
-    // Check if the input consists of only digits
     const isNumeric = /^\d*$/.test(currentText);
 
     function isValidInput(
@@ -106,7 +96,6 @@ function TimerPicker({
     }
   }
 
-  //Handle the exit of each input
   function handleOnBlur(index: number) {
     const timesValuesCopy = [...timeValues];
     const currentText = timesValuesCopy[index].text;
@@ -120,7 +109,6 @@ function TimerPicker({
     setTimeValues(timesValuesCopy);
   }
 
-  //Save the time in a formatted text
   function saveTime() {
     const meridiemSelected = meridiem.filter(
       (singleMeridiem) => singleMeridiem.isSelected
@@ -133,8 +121,6 @@ function TimerPicker({
     setOpenTimePickerWindow(false);
   }
 
-  //UseEffect hooks
-  //--------------
 
   useEffect(() => {
     if (openTimePickerWindow) {
@@ -153,12 +139,10 @@ function TimerPicker({
       const currentMinutes = now.getMinutes().toString().padStart(2, "0");
       const AmPm = currentHour >= 12 ? "PM" : "AM";
 
-      // Convert hours from 24-hour format to 12-hour format
       currentHour = currentHour % 12;
       currentHour = currentHour ? currentHour : 12;
       const formattedHour = currentHour.toString().padStart(2, "0");
 
-      //Update The TimeValues
       const timeValuesCopy = [...timeValues];
       timeValuesCopy[0].text = formattedHour;
       timeValuesCopy[1].text = currentMinutes;
@@ -277,7 +261,7 @@ function TimerPicker({
       {/* Save Button */}
       <button
         onClick={saveTime}
-        className="bg-customRed p-3 text-white w-full rounded-md mt-10 mb-1"
+        className="bg-customBlue p-3 text-white w-full rounded-md mt-10 mb-1"
       >
         Save
       </button>

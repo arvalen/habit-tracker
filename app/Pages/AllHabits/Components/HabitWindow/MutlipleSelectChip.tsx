@@ -70,7 +70,6 @@ export default function MultipleSelectChip({
       target: { value },
     } = event;
     setSelectedAreas(
-      // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
   };
@@ -78,25 +77,20 @@ export default function MultipleSelectChip({
   // Filter out the "All" element
   const filteredAreas = allAreas.filter((area) => area.name !== "All");
 
-  // This use effect enable us to save the whole object matches the name is the selectedAreas array
   React.useEffect(() => {
     const selectedAreaObjects = selectedAreas.map((selectedArea) => {
-      // Find the corresponding area object in the areas array
-      return allAreas.find((area) => area.name === selectedArea); // Non-null assertion operator
+      return allAreas.find((area) => area.name === selectedArea); 
     });
 
     setSelectedAreasItems(selectedAreaObjects);
   }, [selectedAreas]);
 
-  // Use the callback function onChange to pass up the the selectedAreasItems to the parent
-  // everytime the selectedAreasItems updates
 
   React.useEffect(() => {
     onChange(selectedAreasItems);
   }, [selectedAreasItems]);
 
   React.useEffect(() => {
-    //If we want to edit a habit
     if (selectedItems) {
       const habitSelected = selectedItems as HabitType;
       const { areas } = habitSelected;
@@ -107,7 +101,6 @@ export default function MultipleSelectChip({
 
       setSelectedAreas(selectedArea);
     } else {
-      //when we open the habit window, empty the selectedAreas
       setSelectedAreas([]);
     }
   }, [openHabitWindow]);

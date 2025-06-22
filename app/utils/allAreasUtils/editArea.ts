@@ -21,7 +21,6 @@ export default async function editArea({
 }) {
   console.log(allHabits);
 
-  //Convert the icon to text
   const { icon } = areaItem;
   const areaIconText = iconToText(icon as IconProp);
   const copyAreaItem = { ...areaItem, icon: areaIconText };
@@ -54,7 +53,6 @@ export default async function editArea({
 
   console.log(allHabits);
 
-  //Convert all the icons to text of all UpdatedHabits
   const convertIconToTextOfAllHabits: HabitType[] = updateAllHabits.map(
     (habit) => {
       return {

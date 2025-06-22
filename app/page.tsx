@@ -9,11 +9,11 @@ export default function Home() {
       <HeroSection />
       <div className="flex w-full justify-center mt-20">
         <Image
-          src={"/app.jpg"}
+          src={"/app.svg"}
           alt="dashboard"
-          width={900}
+          width={400}
           height={400}
-          className="shadow-xl aspect-auto sm:w-full w-[398px]  rounded-lg max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
+          style={{ maxWidth: "400px", height: "auto" }}
         />
       </div>
     </div>

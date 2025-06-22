@@ -7,7 +7,7 @@ export default function WellDonePlaceHolder() {
     <div className="flex justify-center items-center p-5 flex-col">
       <SuccessIcon color={defaultColor.textColor50} />
       <span className="text-[13px] text-gray-400">
-        {`Great job! You've completed all your habits for today. 🌟`}
+        {`You completed all your habits for today. Proud of you, King 👑. Let’s do it again tomorrow!`}
       </span>
     </div>
   );

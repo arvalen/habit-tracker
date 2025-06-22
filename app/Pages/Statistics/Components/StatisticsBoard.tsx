@@ -61,10 +61,6 @@ export default function StatisticsBoard() {
   useEffect(() => {
     const dateCounts: { [key: string]: number } = {};
 
-    //Calculate the total number of completed habits
-    //:::::::::::::::::::::::::::::::::::::::::::::
-
-    //Extract unique dates from allHabits
     allHabits.forEach((habit) => {
       habit.completedDays.forEach((day) => {
         const date = day.date;
@@ -97,27 +93,20 @@ export default function StatisticsBoard() {
       }
     }
 
-    //Calculate the average per day of habits completed
-    //:::::::::::::::::::::::::::::::::::::::::::::
     let totalCompletedHabits = 0;
-    //1. Count the total of completed habits
     Object.values(dateCounts).forEach((habitCount) => {
       totalCompletedHabits += habitCount;
     });
 
     console.log(uniqueDates);
 
-    //2. Calculate the average
     const averagePerDaily = (totalCompletedHabits / uniqueDates.length).toFixed(
       2
     );
 
-    //Calculate the total streak
-    //:::::::::::::::::::::::::::::::::::::::::::::
     const streaks = allHabits.map((habit) => calculateStreak(habit));
     const totalStreak = streaks.reduce((a, b) => a + b, 0);
 
-    //Update the state
     const copyStatisticsCard = [...statisticsCard];
     copyStatisticsCard[0].counter = allHabits.length;
     copyStatisticsCard[1].counter = perfectDayCount;
@@ -144,7 +133,7 @@ export default function StatisticsBoard() {
           key={singleIndex}
           className="  flex flex-col gap-1 items-start p-5 rounded-md"
         >
-          <FontAwesomeIcon className="text-customRed" icon={singleCard.icon} />
+          <FontAwesomeIcon className="text-customBlue" icon={singleCard.icon} />
           <span className="font-bold text-xl mt-3">{singleCard.counter}</span>
           <span className="font-light text-sm">{singleCard.text}</span>
         </div>
@@ -159,7 +148,7 @@ export function calculateStreak(habit: HabitType): number {
     const days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
     return days[date.getUTCDay()];
   }
-  // Convert completed days to day of the week
+
   const completedDays = habit.completedDays.map((day) => day.date);
   const frequency = habit.frequency[0].days;
   const completedDaysOfWeek = completedDays.map(getDayOfWeek);
@@ -173,7 +162,7 @@ export function calculateStreak(habit: HabitType): number {
     const currentIndex = frequency.indexOf(day);
 
     if (currentIndex === -1) {
-      streak = 0; // Reset streak if day is not in frequency
+      streak = 0; 
     } else {
       if (
         lastIndex === -1 ||
@@ -194,10 +183,6 @@ export function calculateStreak(habit: HabitType): number {
 export function calculateTotalPerfectDays(allHabits: HabitType[]): number {
   const dateCounts: { [key: string]: number } = {};
 
-  //Calculate the total number of completed habits
-  //:::::::::::::::::::::::::::::::::::::::::::::
-
-  //Extract unique dates from allHabits
   allHabits.forEach((habit) => {
     habit.completedDays.forEach((day) => {
       const date = day.date;

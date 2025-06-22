@@ -37,8 +37,8 @@ function SingleMenuItem({ menuItemProp }: { menuItemProp: menuItemType }) {
       className={`flex gap-2 items-center p-2  mb-3 ml-8
       cursor-pointer rounded-md w-36 select-none text-gray-400   ${
         menuItemProp.isSelected
-          ? "bg-customRed transition-all text-white"
-          : "hover:text-customRed"
+          ? "bg-customBlue transition-all text-white"
+          : "hover:text-customBlue"
       } `}
     >
       <FontAwesomeIcon
