@@ -10,7 +10,7 @@ export const defaultColor = {
 };
 
 export const darkModeColor = {
-  background: "#000f15",
+  background: "#141414",
   textColor: "#FFFFFF",
   backgroundSlate: "#2a2d2e",
 };
