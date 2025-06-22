@@ -87,7 +87,7 @@ export default function HabitsContainerMiddle() {
               {isAllHabitsCompleted && (
                 <div className="flex justify-center items-center p-5 flex-col">
                   <SuccessIcon color={defaultColor.textColor50} />
-                  <span className="text-[13px] text-gray-800 w-64 text-center mt-6">
+                  <span className="text-[13px] text-gray-600 w-64 text-center mt-6">
                     {`You completed all your habits for today. Proud of you, King 👑. Let’s do it again tomorrow!`}
                   </span>
                 </div>
