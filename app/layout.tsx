@@ -14,7 +14,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "Habit Tracker",
-  description: "Track your habits, goals..",
+  description: "Build habits that make you a king",
 };
 
 export default function RootLayout({
