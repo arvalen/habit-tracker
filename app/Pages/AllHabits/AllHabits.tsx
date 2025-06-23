@@ -6,7 +6,6 @@ import HabitsCompleted from "./Components/HabitsCompleted";
 import HabitWindow from "./Components/HabitWindow";
 import { Toaster } from "react-hot-toast";
 import AreasContainer from "./Components/AreasContainer";
-import { HabitType } from "@/app/Types/GlobalTypes";
 import DropDown from "@/app/Dropdown";
 import { ConfirmationWindow } from "@/app/ConfirmationWindow";
 

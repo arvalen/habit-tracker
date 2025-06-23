@@ -1,7 +1,5 @@
 import { AreaType } from "@/app/Types/GlobalTypes";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { Dispatch } from "react";
-import { SetStateAction } from "react";
 import toast from "react-hot-toast";
 import { iconToText } from "@/app/Pages/AllHabits/Components/IconsWindow/IconData";
 export default async function addNewArea({
@@ -39,7 +37,7 @@ export default async function addNewArea({
       //Update the _id of the area
       const updatedIdOfArea = { ...areaItem, _id: _id };
 
-      //Add the updated habit to the allHabits array
+      //Add the updated area to the allArea array
       setAllAreas([...allAreas, updatedIdOfArea]);
 
       toast.success("Area added successfully!");
